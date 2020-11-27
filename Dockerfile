@@ -29,7 +29,7 @@ WORKDIR /opt/youtube-dl-react-viewer/youtube-dl-express-backend
 RUN sed -i 's/localhost:27017/db:27017/g' .env.sample
 
 # Change the default downloader to youtube-dlc
-RUN sed -i 's/youtube-dl/youtube-dlc/g' .env.sample
+RUN sed -i 's/=youtube-dl/=youtube-dlc/g' .env.sample
 
 # Create the entrypoint shell script. This will read the .env.sample file, check if the user has specified these in the environment, write to a .env file, and spawn the backend
 RUN echo '#!/bin/sh' >> docker-entrypoint.sh && \
