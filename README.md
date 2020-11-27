@@ -53,47 +53,48 @@
 
 ## Installation
 
-1. [Install Python 2.6, 2.7 or 3.2+](https://www.python.org/downloads/) (On Windows you can skip this step).
+1. [Install Python 2.6, 2.7 or 3.2+](https://www.python.org/downloads/) (On Windows you can skip this step)
 
-2. [Install the latest release of youtube-dl](https://github.com/ytdl-org/youtube-dl/blob/master/README.md#installation) (On Windows download the executable binary).
+2. [Install the latest release of youtube-dl](https://github.com/ytdl-org/youtube-dl/blob/master/README.md#installation) (On Windows download the executable binary)
 
-3. [Install the latest versions of ffmpeg and ffprobe](https://ffmpeg.org/download.html) (On Windows download the executable binaries). Make sure you are downloading the "full" version of ffmpeg that includes all the required libraries or you will get merge errors.
+3. [Install the latest versions of ffmpeg and ffprobe](https://ffmpeg.org/download.html) (On Windows download the executable binaries). Make sure you are downloading the "full" version of ffmpeg that includes all the required libraries or you will get merge errors
 
-4. [Install Node.js version >=14.2.0 and npm >=6.0.0](https://nodejs.org/en/download/current/) (youtube-dl-react-viewer will not work with earlier versions of Node.js).
+4. [Install Node.js version >=14.2.0 and npm >=6.0.0](https://nodejs.org/en/download/current/) (youtube-dl-react-viewer will not work with earlier versions of Node.js)
 
-5. [Install mongoDB version >=4.2.8](https://www.mongodb.com/try/download/community).
+5. [Install mongoDB version >=4.2.8](https://www.mongodb.com/try/download/community)
 
-6. [Download the latest release of youtube-dl-react-viewer](https://github.com/graham-walker/youtube-dl-react-viewer/releases).
-    - Unzip the contents of the release to the location of your choosing.
-    - Configure the environment variables (see section below).
-    - Run `sudo sh install.sh` (run `install.bat` as Administrator on Windows) to install additional dependencies.
-    - Run `sudo sh start-server.sh` (run `start-server.bat` as Administrator on Windows) to start the web app.
-    - You can also start the web app using the PM2 config file by running the command `sudo pm2 start ./youtube-dl-express-backend/pm2.config.json` (run as Administrator on Windows).
-    - Access the web app by going to `http://localhost:5000` in your browser.
-    - View the console output of the web app's server and the spawned youtube-dl process by running `sudo pm2 logs youtube-dl-react-viewer` (run as Administrator on Windows).
-    - Stop the web app by running the command `sudo pm2 stop youtube-dl-react-viewer` (run as Administrator on Windows).
+6. [Download the latest release of youtube-dl-react-viewer](https://github.com/graham-walker/youtube-dl-react-viewer/releases)
+    - Unzip the contents of the release to the location of your choosing
+    - Configure the environment variables (see the [configuring environment variables section](#configuring-environment-variables))
+    - Run `sudo sh install.sh` (run `install.bat` as Administrator on Windows) to install additional dependencies
+    - Run `sudo sh start-server.sh` (run `start-server.bat` as Administrator on Windows) to start the web app
+    - You can also start the web app using the PM2 config file by running the command `sudo pm2 start ./youtube-dl-express-backend/pm2.config.json` (run as Administrator on Windows)
+    - Access the web app by navigating to `http://localhost:5000` in your browser
+    - View the console output of the web app's server and the spawned youtube-dl process by running `sudo pm2 logs youtube-dl-react-viewer` (run as Administrator on Windows)
+    - Stop the web app by running the command `sudo pm2 stop youtube-dl-react-viewer` (run as Administrator on Windows)
 
-7. (Optional) In order to be able to open videos in VLC directly from the browser you must manually register the `vlc://` URL protocol. An installation/guide for how to do this can be found at [stefansundin/vlc-protocol](https://github.com/stefansundin/vlc-protocol/).
+7. (Optional) In order to be able to open videos in VLC directly from the browser you must manually register the `vlc://` URL protocol. An installation/guide for how to do this can be found at [stefansundin/vlc-protocol](https://github.com/stefansundin/vlc-protocol/)
 
-8. (Optional) In order to run the web app automatically after startup or after a system reboot you must configure PM2. See these resources for help configuring PM2 on [Linux/MacOS](https://pm2.keymetrics.io/docs/usage/startup/#saving-current-processes) and [Windows](https://stackoverflow.com/questions/42758985/windows-auto-start-pm2-and-node-apps).
+8. (Optional) In order to run the web app automatically after startup or after a system reboot you must configure PM2. See these resources for help configuring PM2 on [Linux/MacOS](https://pm2.keymetrics.io/docs/usage/startup/#saving-current-processes) and [Windows](https://stackoverflow.com/questions/42758985/windows-auto-start-pm2-and-node-apps)
 
 ## Running in Docker
+As of release 1.1.0 youtube-dl-react-viewer supports Docker containers.
 
-1. Clone the youtube-dl-react-viewer repository (e.g. `git clone https://github.com/graham-walker/youtube-dl-react-viewer`)
-    * To change to a specific version, the git checkout command can be used e.g. `git checkout tags/v1.0.0`
+1. Clone the youtube-dl-react-viewer repository `git clone https://github.com/graham-walker/youtube-dl-react-viewer`
 
-2. Change directory to the cloned project `cd youtube-dl-react-viewer`
+2. Set the working directory to `./youtube-dl-react-viewer`
 
-3. Run `docker-compose up -d` to build the image and start the containers.
+3. To select the version of the release you want to install run `git checkout tags/v1.1.1`
 
-4. Navigate to http://localhost:5000 to access the application.
+4. Specify the Docker container's environment variables by editing the `environment:` option inside of `docker-compose.yaml`
+    - The web app will not start if the values for the environment variables `SUPERUSER_PASSWORD` and `JWT_TOKEN_SECRET` are their default values. A full list of supported variables is shown in the [section below](#configuring-environment-variables)
 
-5. For further configuration, access the container's command line by running `docker exec -it youtube-dl-react-viewer_app_1 /bin/sh`. `pip` is pre-installed.
+5. Run `sudo docker-compose up -d` to build the image and start the containers
 
-**Please note:** youtube-dl-react-viewer is not distributed with a copy of [ytdl-org/youtube-dl](https://youtube-dl.org/). This may be added to the container using the command line.
+6. For further configuration, access the container's command line by running `docker exec -it youtube-dl-react-viewer_app_1 /bin/sh`
+    - The youtube-dl-react-viewer Dockerfile does not include or automatically install a copy of [ytdl-org/youtube-dl](https://youtube-dl.org/). This must be added to the container manually using the command line
 
-Environment variables for the backend can be specified inside the `docker-compose.yaml` file. A full list of supported variables is shown in the next section.
-
+7. Access the web app by navigating to `http://localhost:5000` in your browser
 
 ## Configuring Environment Variables
 
@@ -232,10 +233,6 @@ Currently, I have tested the app on Windows and Ubuntu and confirmed it working 
     node --require dotenv/config index.js
     ```
 
-- **Like and Dislike Counts**
-    <br>
-    As of youtube-dl version <=2020.09.20 `like_count` and `dislike_count` do not get returned in the metadata. This means that videos downloaded by the app or the global statistics will not have these values. Hopefully, this is fixed in a future release of youtube-dl. Alternatively, you can set `YOUTUBE_DL_PATH` to a third-party fork such as blackjack4494/youtube-dlc.
-
 ## Handling Download Errors
 
 There are two types of errors that can happen while downloading videos:
@@ -259,11 +256,6 @@ You can attempt to fix the second type of error by clicking "Show Details" and t
 
 **A:** These files are located at the base of the configured output directory.
 #
-**Q:** Is there any way to import videos I have already downloaded into the app?
-
-**A:** There is not currently a way to do this. I might create a script at some point that allows this.
-#
-
 **Q:** Can I delete a video downloaded in the app?
 
 **A:** There is currently no way to delete a video downloaded in the app. In order to do this manually you will need to delete the files of the video in the `/videos` and `/thumbnails` folders of the output directory, delete the video from the `archive.txt` file in the local directory, and delete the record of the video from the database. Doing this will not affect the global statistics which will now be inaccurate.
@@ -274,14 +266,14 @@ Planned features in no particular order. If a feature is checked it has been com
 - [ ] Dark aware theme
 - [ ] Local user statistics (videos viewed, etc.)
 - [ ] Local user's ability to create custom playlists, favorites, queue, comments
-- [ ] Verify the integrity of hashed files
+- [ ] Verify the integrity of (the already) hashed video files
 - [ ] Remember where local user left off watching a video
 - [ ] SponsorBlock Implementation
 - [ ] Search and sort uploaders like videos
 - [ ] More graphs for the global statistics page
 - [ ] Display video chapters in the video bar
 - [ ] 3D/VR video playback support
-- [ ] Refetch metadata for downloaded videos to get updated views, like counts, etc.
+- [ ] Refetch metadata for already downloaded videos to get updated views, like counts, etc.
 - [ ] Include [PetterKraabol/Twitch-Chat-Downloader](https://github.com/PetterKraabol/Twitch-Chat-Downloader) to download the chat for downloaded Twitch livestreams
 - [ ] Show video chapter titles in the video player
 
@@ -292,6 +284,7 @@ Version 3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 - The function `doProbeSync()` located in `./youtube-dl-express-backend/exec.js` is based on [node-ffprobe](https://github.com/ListenerApproved/node-ffprobe#readme), [MIT](https://opensource.org/licenses/MIT)
 - Created using [facebook/create-react-app](https://github.com/facebook/create-react-app), [MIT](https://opensource.org/licenses/MIT)
 - Permission to mirror the content hosted on the live demo was obtained from [Public Domain Films](https://www.youtube.com/channel/UCm0SxTO3_kulT6SE0AAeHOw)
+- Dockerfile created by [JamoDevNich](https://github.com/JamoDevNich)
 
 ## Disclaimer
 **youtube-dl-react-viewer does not contain any code from [ytdl-org/youtube-dl](https://youtube-dl.org/) or any references to downloading or encouraging the downloading of copyrighted works. youtube-dl-react-viewer by itself does not have any capability to download videos and the author does not support using youtube-dl-react-viewer to download or redistribute copyrighted works. youtube-dl-react-viewer can be used for legitimate purposes that do not include the downloading or redistributing of copyrighted works.**
