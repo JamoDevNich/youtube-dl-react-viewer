@@ -6,12 +6,6 @@
 
 ---
 
-**Support the project**
-
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K22FCAJ)
-
----
-
 **I strongly recommend reading the entire readme before attempting to install the web app and download videos.**
 
 - [SCREENSHOTS](#screenshots)
@@ -134,8 +128,8 @@ VERBOSE                         Should the web app's server and the
                                 information when downloading a video.
 NODE_ENV                        Should be set to "production".
 ```
-Additionally, you can set the environment variable `REACT_APP_BRAND` to change the display name of the web app from "youtube-dl Viewer" to something else and you can set the environment variable `REACT_APP_SHOW_KOFI` to show or hide my donation links. Unlike the other variables, the `.env` file that contains these variables is located in `./youtube-dl-react-frontend`. Additionally, for changes to these variables to take effect you will need to rebuild the React app:
-1. Change the value of `REACT_APP_BRAND` or `REACT_APP_SHOW_KOFI`
+Additionally, you can change the environment variable `REACT_APP_BRAND` to set the display name of the web app from "youtube-dl Viewer" to something else or you can change the value of `REACT_APP_CHECK_FOR_UPDATES` to set whether the app will automatically check for new releases from the admin panel. Unlike the other variables, the `.env` file that contains these variables is located in `./youtube-dl-react-frontend`. Additionally, for changes to these variables to take effect you will need to rebuild the React app:
+1. Change the value of `REACT_APP_BRAND` or `REACT_APP_CHECK_FOR_UPDATES`
 2. Set the working directory to `./youtube-dl-react-frontend`
 3. Run `npm install --unsafe-perm`
 4. Run `npm run build`
@@ -244,6 +238,10 @@ You can attempt to fix the second type of error by clicking "Show Details" and t
 
 ## FAQ
 
+**Q:** The version of youtube-dl I installed when configuring the web app is now out of date/not working. Is there any way I can update it automatically?
+
+**A:** You can update youtube-dl inside the web app by going to the admin control panel, navigating to the section titled "youtube-dl" and clicking "Check for updates".
+#
 **Q:** How can I add uploader icons to the web app?
 
 **A:** You must manually download and add the uploader icons. Open the output directory and place the uploader icons in the `./avatars` folder. The name of the file should match the name of the uploader but with any path unsafe characters replaced with underscores ("_").
@@ -256,9 +254,9 @@ You can attempt to fix the second type of error by clicking "Show Details" and t
 
 **A:** These files are located at the base of the configured output directory.
 #
-**Q:** Can I delete a video downloaded in the app?
+**Q:** Can I delete a video downloaded in the web app?
 
-**A:** There is currently no way to delete a video downloaded in the app. In order to do this manually you will need to delete the files of the video in the `/videos` and `/thumbnails` folders of the output directory, delete the video from the `archive.txt` file in the local directory, and delete the record of the video from the database. Doing this will not affect the global statistics which will now be inaccurate.
+**A:** There is currently no way to delete a video downloaded in the web app. In order to do this manually you will need to delete the files of the video in the `/videos` and `/thumbnails` folders of the output directory, delete the video from the `archive.txt` file in the local directory, and delete the record of the video from the database. Doing this will not affect the global statistics which will now be inaccurate.
 
 ## Planned
 Planned features in no particular order. If a feature is checked it has been completed but has not made its way into the latest release. There is no timetable for features or any guarantee they will be completed in a timely manner.
@@ -275,7 +273,6 @@ Planned features in no particular order. If a feature is checked it has been com
 - [ ] 3D/VR video playback support
 - [ ] Refetch metadata for already downloaded videos to get updated views, like counts, etc.
 - [ ] Include [PetterKraabol/Twitch-Chat-Downloader](https://github.com/PetterKraabol/Twitch-Chat-Downloader) to download the chat for downloaded Twitch livestreams
-- [ ] Show video chapter titles in the video player
 
 ## License/Credits
 

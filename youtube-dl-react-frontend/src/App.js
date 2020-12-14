@@ -17,6 +17,7 @@ import VideoPage from './components/Video/Video';
 import Page from './components/Page/Page';
 import UploaderPage from './components/Uploader/Uploader';
 import UserContext from './contexts/user.context';
+import UploaderList from './components/UploaderList/UploaderList';
 import history from './utilities/history.utility';
 import { faEye, faCamera, faTachometerAlt, faFile, faExternalLinkAlt, faCaretRight, faUser, faList, faVideo, faClock, faThumbsUp, faThumbsDown, faHourglassEnd, faRandom, faSearch, faFilter, faCalendarAlt, faPlus, faBriefcase, faDownload, faPlay, faHandPaper, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
@@ -37,6 +38,15 @@ function App() {
 								<VideoList
 									url="videos/search"
 									stats
+									{...props}
+								/>
+							}
+						/>
+						<Route
+							path={['/uploaders', '/uploaders/page/:page']}
+							exact
+							render={(props) =>
+								<UploaderList
 									{...props}
 								/>
 							}
@@ -120,14 +130,6 @@ function App() {
 							To get new releases or submit issues check out the project on GitHub <FontAwesomeIcon icon="external-link-alt" />
 						</a>
 						<span className="d-block">Version: {window.scriptVersion}</span>
-						{process.env.REACT_APP_SHOW_KOFI.toLowerCase() === 'true' &&
-							<>
-								Support the project
-								<a href="https://ko-fi.com/K3K22FCAJ" target="_blank" rel="noopener noreferrer">
-									<img className="ml-2" width="150px" src="ko-fi_logo.png" alt="donation" />
-								</a>
-							</>
-						}
 					</Container>
 				</div>
 			</UserContext>

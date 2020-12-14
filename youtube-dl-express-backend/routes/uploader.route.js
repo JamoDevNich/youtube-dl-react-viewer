@@ -3,9 +3,46 @@ import express from 'express';
 import Video from '../models/video.model.js';
 import Uploader from '../models/uploader.model.js';
 
-import { sortBy, getRandomVideo } from '../utilities/video.utility.js';
+import { search, getRandomVideo } from '../utilities/video.utility.js';
 
 const router = express.Router();
+
+router.get('/page/:page', async (req, res) => {
+    const perPage = 18;
+    let uploaders;
+    let totalWebsites;
+    let totalUploaders;
+    let maxPages;
+    let page = parseInt(req.params.page);
+
+    if (isNaN(page)) return res.sendStatus(404);
+    page--;
+    if (page < 0) return res.sendStatus(404);
+
+    try {
+        uploaders = await Uploader
+            .find({}, '-_id extractor name totalVideoCount totalVideoFilesize lastDateUploaded')
+            .collation({ locale: 'en' })
+            .sort({ name: 1 })
+            .skip(page * perPage)
+            .limit(perPage)
+            .lean()
+            .exec();
+        totalWebsites = (await Uploader.distinct('extractor')).length;
+        totalUploaders = await Uploader.countDocuments();
+        maxPages = Math.ceil(totalUploaders / perPage);
+    } catch (err) {
+        return res.sendStatus(500);
+    }
+    if (uploaders.length === 0) return res.sendStatus(404);
+
+    res.json({
+        uploaders: uploaders,
+        totalWebsites: totalWebsites,
+        totalUploaders: totalUploaders,
+        maxPages: maxPages
+    });
+});
 
 router.get('/:extractor/:name', async (req, res) => {
     let uploader;
@@ -31,26 +68,20 @@ router.get('/:extractor/:name', async (req, res) => {
 
 router.get('/:extractor/:name/:page', async (req, res) => {
     const page = parseInt(req.params.page) || 0;
-    const pattern = { extractor: req.params.extractor, uploader: req.params.name };
+    const filter = { extractor: req.params.extractor, uploader: req.params.name };
 
     let videos;
     let totals = {};
     try {
-        totals.count = (await Video.countDocuments(pattern)) || 0;
-        videos = await Video.find(pattern)
-            .select('-_id extractor id title mediumResizedThumbnailFile directory uploader videoFile uploadDate duration width height viewCount')
-            .sort(sortBy(req.query['sort']))
-            .skip(page * parsedEnv.PAGE_SIZE)
-            .limit(parsedEnv.PAGE_SIZE)
-            .lean()
-            .exec();
+        videos = await search(req.query, page, filter);
+        totals.count = (await Video.countDocuments(filter)) || 0;
     } catch (err) {
         return res.sendStatus(500);
     }
 
     let randomVideo;
     try {
-        randomVideo = await getRandomVideo(totals.count, pattern);
+        randomVideo = await getRandomVideo({}, totals.count, filter);
     } catch (err) {
         return res.sendStatus(500);
     }

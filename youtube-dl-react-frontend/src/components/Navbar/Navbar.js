@@ -54,7 +54,7 @@ class AppNavbar extends Component {
                     <Container>
                         <LinkContainer to="/">
                             <Navbar.Brand className="d-flex d-lg-none mr-auto">
-                                {process.env.REACT_APP_BRAND}
+                                {process.env.REACT_APP_BRAND ? process.env.REACT_APP_BRAND : 'youtube-dl Viewer'}
                             </Navbar.Brand>
                         </LinkContainer>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -65,7 +65,7 @@ class AppNavbar extends Component {
                             <Nav className="w-100 justify-content-left">
                                 <LinkContainer to="/">
                                     <Navbar.Brand className="d-none d-lg-block">
-                                        {process.env.REACT_APP_BRAND}
+                                        {process.env.REACT_APP_BRAND ? process.env.REACT_APP_BRAND : 'youtube-dl Viewer'}
                                     </Navbar.Brand>
                                 </LinkContainer>
                                 <Nav.Item>
@@ -74,7 +74,15 @@ class AppNavbar extends Component {
                                         to="/videos"
                                     >
                                         Videos
-                                </Nav.Link>
+                                    </Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/uploaders"
+                                    >
+                                        Uploaders
+                                    </Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
                                     <Nav.Link
@@ -82,7 +90,7 @@ class AppNavbar extends Component {
                                         to="/statistics"
                                     >
                                         Statistics
-                                </Nav.Link>
+                                    </Nav.Link>
                                 </Nav.Item>
                             </Nav>
                             <Nav className="w-100 justify-content-center">
