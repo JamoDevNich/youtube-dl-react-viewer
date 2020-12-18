@@ -25,7 +25,7 @@ let debug;
     debug = parsed.env.VERBOSE;
 
     program.name('youtube-dl-exec-script')
-        .version(process.env.npm_package_version)
+        .version('1.2.1') // Version is hardcoded here because on non-Windows systems this script has to be called by node instead of npm
         .requiredOption('-v, --video <path>', 'Downloaded video file location')
         .requiredOption('-j, --job-id <string>', 'Job document id')
         .option(
@@ -245,7 +245,6 @@ let debug;
                         + extensionFromUrl(infojsonData.thumbnails[i].url)
                     )
                 );
-                fs.appendFileSync('D:\\filenames.txt', potentialThumbnailFiles[potentialThumbnailFiles.length - 1] + '\r\n');
             }
         }
     }
