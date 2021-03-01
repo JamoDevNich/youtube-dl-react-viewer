@@ -28,8 +28,8 @@ WORKDIR /opt/youtube-dl-react-viewer/youtube-dl-express-backend
 # Change the default database hostname from localhost to 'db'
 RUN sed -i 's/localhost:27017/db:27017/g' .env.sample
 
-# Change the default downloader to yt-dlp (extractor is named youtube-dlc)
-RUN sed -i 's/=youtube-dl/=youtube-dlc/g' .env.sample
+# Change the default downloader to yt-dlp
+RUN sed -i 's/=youtube-dl/=yt-dlp/g' .env.sample
 
 # Allow the admin panel updater to upgrade the youtube-dlc pip package
 RUN sed -i 's/parsedEnv.YOUTUBE_DL_PATH, \['\''-U'\''\]/'\''pip'\'', \['\''install'\'', '\''--upgrade'\'', '\''yt-dlp'\''\]/g' routes/admin.route.js
