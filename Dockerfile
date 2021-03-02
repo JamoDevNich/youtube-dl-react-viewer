@@ -16,11 +16,11 @@ WORKDIR /opt/youtube-dl-react-viewer/youtube-dl-react-frontend
 RUN npm install --unsafe-perm
 RUN cp .env.sample .env && npm run build
 
+# Install yt-dlp
+RUN pip install wheel yt-dlp
+
 # Remove packages used for building
 RUN apk del make build-base python2
-
-# Install youtube-dlc
-RUN pip install youtube-dlc
 
 # Change workdir to the backend folder
 WORKDIR /opt/youtube-dl-react-viewer/youtube-dl-express-backend
@@ -28,11 +28,11 @@ WORKDIR /opt/youtube-dl-react-viewer/youtube-dl-express-backend
 # Change the default database hostname from localhost to 'db'
 RUN sed -i 's/localhost:27017/db:27017/g' .env.sample
 
-# Change the default downloader to youtube-dlc
-RUN sed -i 's/=youtube-dl/=youtube-dlc/g' .env.sample
+# Change the default downloader to yt-dlp
+RUN sed -i 's/=youtube-dl/=yt-dlp/g' .env.sample
 
 # Allow the admin panel updater to upgrade the youtube-dlc pip package
-RUN sed -i 's/parsedEnv.YOUTUBE_DL_PATH, \['\''-U'\''\]/'\''pip'\'', \['\''install'\'', '\''--upgrade'\'', '\''youtube-dlc'\''\]/g' routes/admin.route.js
+RUN sed -i 's/parsedEnv.YOUTUBE_DL_PATH, \['\''-U'\''\]/'\''pip'\'', \['\''install'\'', '\''--upgrade'\'', '\''yt-dlp'\''\]/g' routes/admin.route.js
 
 # Create the entrypoint shell script. This will read the .env.sample file, check if the user has specified these in the environment, write to a .env file, and spawn the backend
 RUN echo '#!/bin/sh' >> docker-entrypoint.sh && \
